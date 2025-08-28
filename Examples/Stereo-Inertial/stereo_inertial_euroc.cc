@@ -57,6 +57,19 @@ int main(int argc, char **argv)
         cout << "file name: " << file_name << endl;
     }
 
+    bool bUseViewer = false;
+    if (argc == 4)  // 3 args after program name
+    {
+        if (strcmp(argv[3], "true") == 0) {
+            bUseViewer = true;
+        } else if (strcmp(argv[3], "false") == 0) {
+            bUseViewer = false;
+        }
+    }
+
+    // Add this line to print the value of bUseViewer
+    std::cout << "The value of bUseViewer is: " << (bUseViewer ? "true" : "false") << std::endl;
+
     // Load all sequences:
     int seq;
     vector< vector<string> > vstrImageLeft;
@@ -159,7 +172,7 @@ int main(int argc, char **argv)
     cout.precision(17);
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
-    ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::IMU_STEREO, true);
+    ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::IMU_STEREO, bUseViewer);
 
     cv::Mat imLeft, imRight, imLeftRect, imRightRect;
     for (seq = 0; seq<num_seq; seq++)

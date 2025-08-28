@@ -95,8 +95,29 @@ int main(int argc, char **argv)
       bEqual = true;
   }
 
+  // the arguments are:
+  // argv[0] → program name (ros_stereo_inertial)
+  // argv[1] → /root/catkin_ws/src/orbslam3_ros/Vocabulary/ORBvoc.txt
+  // argv[2] → /config/d455_si/d455_si.yaml
+  // argv[3] → "true"
+
+  // So argc == 4.
+
+  bool bUseViewer = false;
+  if (argc == 4)  // 3 args after program name
+  {
+      if (strcmp(argv[3], "true") == 0) {
+          bUseViewer = true;
+      } else if (strcmp(argv[3], "false") == 0) {
+          bUseViewer = false;
+      }
+  }
+
+  // Add this line to print the value of bUseViewer
+  std::cout << "The value of bUseViewer is: " << (bUseViewer ? "true" : "false") << std::endl;
+
   // Create SLAM system. It initializes all system threads and gets ready to process frames.
-  ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::IMU_STEREO,true);
+  ORB_SLAM3::System SLAM(argv[1],argv[2],ORB_SLAM3::System::IMU_STEREO, bUseViewer);
 
   ImuGrabber imugb;
   ImageGrabber igb(&SLAM,&imugb,sbRect == "true",bEqual,n);
